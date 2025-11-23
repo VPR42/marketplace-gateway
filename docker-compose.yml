@@ -1,18 +1,18 @@
 services:
-  module-name:
+  marketplace-gateway:
     build:
       dockerfile: ./Dockerfile
       context: ./
     restart: always
-    image: module-name
-    container_name: module-name
+    image: marketplace-gateway
+    container_name: marketplace-gateway
     volumes:
-      - /home/kinoko/logs/module-name:/logs
+      - /home/kinoko/logs/marketplace-gateway:/logs
     #      - ./logs:/logs                             # Для отладки на windows машине
     networks:
       - backend
     ports:
-      - "33300:33300"
+      - "33306:33306"
 
 networks:
   backend:
