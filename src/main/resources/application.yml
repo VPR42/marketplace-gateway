@@ -6,4 +6,4 @@ spring:
     name: marketplace-gateway
 
 server:
-  port: 33306
+  port: 33307
