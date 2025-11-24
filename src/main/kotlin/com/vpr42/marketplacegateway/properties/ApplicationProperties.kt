@@ -8,8 +8,6 @@ data class ApplicationProperties(
     val routes: List<Route> = listOf(),
 ) {
     data class AuthenticationProperties(
-        val accessLifeTime: Long,
-        val refreshLifeTime: Long,
         val secret: String,
     )
 
