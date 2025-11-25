@@ -11,18 +11,16 @@ spring:
     password: mp_dev_passwd
   cloud:
     gateway:
-      server:
-        webflux:
-          globalcors:
-            add-to-simple-url-handler-mapping: true
-            cors-configurations:
-              '[/**]':
-                allowedOriginPatterns:
-                  - "http://localhost:5173"
-                  - "https://hack.kinoko.su"
-                allowedHeaders: "*"
-                allowedMethods: "*"
-                allowCredentials: true
+      globalcors:
+        add-to-simple-url-handler-mapping: true
+        corsConfigurations:
+          '[/**]':
+            allowedOriginPatterns:
+              - "http://localhost:5173"
+              - "https://hack.kinoko.su"
+            allowedHeaders: "*"
+            allowedMethods: "*"
+            allowCredentials: true
 
 eureka:
   client:
