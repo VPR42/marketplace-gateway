@@ -9,6 +9,20 @@ spring:
     url: jdbc:postgresql://kinoko.su:5432/mp_db_dev
     username: mp_dev_user
     password: mp_dev_passwd
+  cloud:
+    gateway:
+      server:
+        webflux:
+          globalcors:
+            add-to-simple-url-handler-mapping: true
+            cors-configurations:
+              '[/**]':
+                allowedOriginPatterns:
+                  - "http://localhost:5173"
+                  - "https://hack.kinoko.su"
+                allowedHeaders: "*"
+                allowedMethods: "*"
+                allowCredentials: true
 
 eureka:
   client:
