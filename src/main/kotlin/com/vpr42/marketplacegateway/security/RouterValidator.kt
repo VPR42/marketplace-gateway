@@ -12,7 +12,7 @@ class RouterValidator(
     var isSecured: Predicate<ServerHttpRequest> = Predicate<ServerHttpRequest> { request ->
         applicationProperties
             .routes
-            .filter { !it.isSecure }
+            .filter { it.isSecure }
             .stream()
             .noneMatch {
                 request.uri.path.contains(it.uri)

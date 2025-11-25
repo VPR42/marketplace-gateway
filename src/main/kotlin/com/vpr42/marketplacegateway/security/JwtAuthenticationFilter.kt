@@ -1,5 +1,6 @@
 package com.vpr42.marketplacegateway.security
 
+import org.slf4j.LoggerFactory
 import org.springframework.cloud.context.config.annotation.RefreshScope
 import org.springframework.cloud.gateway.filter.GatewayFilter
 import org.springframework.cloud.gateway.filter.GatewayFilterChain
@@ -18,6 +19,7 @@ class JwtAuthenticationFilter(
     private val userDetailsService: UserDetailsService,
     private val routerValidator: RouterValidator
 ) : GatewayFilter {
+    private val logger = LoggerFactory.getLogger(JwtAuthenticationFilter::class.java)
 
     override fun filter(
         exchange: ServerWebExchange,
@@ -26,7 +28,11 @@ class JwtAuthenticationFilter(
         val request: ServerHttpRequest = exchange.request
 
         if (routerValidator.isSecured.test(request)) {
-            if (!request.headers.containsKey(AUTH_HEADER)) return onError(exchange)
+            logger.info("Request to ${request.uri} is secured")
+            if (!request.headers.containsKey(AUTH_HEADER)) {
+                logger.error("Secured request is hasn't token")
+                return onError(exchange)
+            }
 
             val token = request
                 .headers
@@ -34,7 +40,10 @@ class JwtAuthenticationFilter(
                 .substring(7)
             val userDetails = userDetailsService.loadUserByUsername(jwtService.getLogin(token))
 
-            if (!jwtService.isTokenValid(token, userDetails)) return onError(exchange)
+            if (!jwtService.isTokenValid(token, userDetails)) {
+                logger.warn("Token is invalid")
+                return onError(exchange)
+            }
 
             populateRequestWithHeaders(exchange, token)
         }
