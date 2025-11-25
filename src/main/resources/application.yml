@@ -4,6 +4,29 @@ logging:
 spring:
   application:
     name: marketplace-gateway
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://kinoko.su:5432/mp_db_dev
+    username: mp_dev_user
+    password: mp_dev_passwd
+
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://marketplace-eureka:33307/eureka
+    registry-fetch-interval-seconds: 10
+
+app:
+  auth:
+    secret: a45933b42fc4f16f67902829ab2c259205f3080e672c1695beee0f68b915c579fedc4b37737062bd
+  # Роуты сервисов для Юрики. Каждый последующий добавляется так же через тире
+  routes:
+    - id: marketplace-auth-api          # Уникальный id. Пишите что хотите. В идеале оставляем имя сервиса
+      path: /api/auth/**                # Ваш апи паттерн по которому определяется сервис. То есть все ваши запросы должны начинаться с этого паттерна. Повторения не допустимы
+      uri: lb://marketplace-auth-api    # По сути адрес обращения. Самый простой способ узнать - запускаем этот сервис, подключаем свой сервис к нужной eureka и смотрим в ней
+      is-secure: false                  # У всех сервисов кроме авторизации ставить true
 
 server:
   port: 33306
