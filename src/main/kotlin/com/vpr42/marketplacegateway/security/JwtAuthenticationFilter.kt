@@ -4,6 +4,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.cloud.context.config.annotation.RefreshScope
 import org.springframework.cloud.gateway.filter.GatewayFilter
 import org.springframework.cloud.gateway.filter.GatewayFilterChain
+import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.server.reactive.ServerHttpRequest
@@ -28,6 +29,10 @@ class JwtAuthenticationFilter(
         chain: GatewayFilterChain
     ): Mono<Void>? {
         val request: ServerHttpRequest = exchange.request
+
+        if (request.method == HttpMethod.OPTIONS) {
+            return chain.filter(exchange)
+        }
 
         if (routerValidator.isSecured.test(request)) {
             logger.info("Request to ${request.uri} is secured")
