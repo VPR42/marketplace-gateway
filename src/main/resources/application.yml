@@ -16,6 +16,7 @@ eureka:
     register-with-eureka: true
     service-url:
       defaultZone: http://marketplace-eureka:33307/eureka
+    registry-fetch-interval-seconds: 10
 
 app:
   auth:
