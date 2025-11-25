@@ -12,7 +12,7 @@ services:
     networks:
       - backend
     ports:
-      - "33307:33307"
+      - "33306:33306"
 
 networks:
   backend:

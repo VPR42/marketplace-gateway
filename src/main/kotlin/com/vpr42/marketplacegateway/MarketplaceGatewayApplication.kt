@@ -4,11 +4,11 @@ import com.vpr42.marketplacegateway.properties.ApplicationProperties
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.runApplication
-import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient
 import org.springframework.web.reactive.config.EnableWebFlux
 
 @SpringBootApplication
-@EnableEurekaServer
+@EnableDiscoveryClient
 @EnableWebFlux
 @EnableConfigurationProperties(
     ApplicationProperties::class
