@@ -20,7 +20,7 @@ class SecurityConfig(
     fun securityWebFilterChain(http: ServerHttpSecurity): SecurityWebFilterChain =
         http
             .csrf { it.disable() }
-            .cors {  }
+            .cors { }
             .httpBasic { it.disable() }
             .formLogin { it.disable() }
             .logout { it.disable() }
