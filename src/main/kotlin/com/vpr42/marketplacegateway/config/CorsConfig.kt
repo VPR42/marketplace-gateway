@@ -8,7 +8,10 @@ import org.springframework.web.reactive.config.WebFluxConfigurer
 class CorsConfig : WebFluxConfigurer {
     override fun addCorsMappings(registry: CorsRegistry) {
         registry.addMapping("/**")
-            .allowedOriginPatterns("*")
+            .allowedOrigins(
+                "http://localhost:5173",
+                "https://hack.kinoko.su"
+            )
             .allowedMethods("*")
             .allowedHeaders("*")
             .allowCredentials(true)
