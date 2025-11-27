@@ -33,6 +33,10 @@ app:
       path: /api/feed/**
       uri: lb://marketplace-feed-api
       is-secure: true
+    - id: marketplace-orders-api
+      path: /api/orders/**
+      uri: lb://marketplace-orders-api
+      is-secure: true
 
 server:
   port: 33306
