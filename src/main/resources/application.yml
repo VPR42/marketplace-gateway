@@ -1,5 +1,7 @@
 logging:
   config: 'classpath:log4j2.yml'
+  level:
+    com.netflix.discovery.shared: error
 
 spring:
   application:
@@ -27,6 +29,10 @@ app:
       path: /api/auth/**                # Ваш апи паттерн по которому определяется сервис. То есть все ваши запросы должны начинаться с этого паттерна. Повторения не допустимы
       uri: lb://marketplace-auth-api    # По сути адрес обращения. Самый простой способ узнать - запускаем этот сервис, подключаем свой сервис к нужной eureka и смотрим в ней
       is-secure: false                  # У всех сервисов кроме авторизации ставить true
+    - id: marketplace-feed-api
+      path: /api/feed/**
+      uri: lb://marketplace-feed-api
+      is-secure: true
 
 server:
   port: 33306
