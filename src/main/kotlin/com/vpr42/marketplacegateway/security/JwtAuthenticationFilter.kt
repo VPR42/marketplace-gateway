@@ -28,13 +28,10 @@ class JwtAuthenticationFilter(
         exchange: ServerWebExchange,
         chain: GatewayFilterChain
     ): Mono<Void>? {
+        var sentExchange = exchange
         val request: ServerHttpRequest = exchange.request
 
-        if (request.method == HttpMethod.OPTIONS) {
-            return chain.filter(exchange)
-        }
-
-        if (routerValidator.isSecured.test(request)) {
+        if (request.method != HttpMethod.OPTIONS && routerValidator.isSecured.test(request)) {
             logger.info("Request to ${request.uri} is secured")
             if (!request.headers.containsKey(AUTH_HEADER)) {
                 logger.error("Secured request is hasn't token")
@@ -45,17 +42,27 @@ class JwtAuthenticationFilter(
                 .headers
                 .getOrEmpty(AUTH_HEADER)[0]
                 .substring(7)
-            val userDetails = userDetailsService.loadUserByUsername(jwtService.getLogin(token))
 
-            if (!jwtService.isTokenValid(token, userDetails)) {
-                logger.warn("Token is invalid")
-                return onError(exchange, "Token is invalid")
+            try {
+                val userDetails = userDetailsService.loadUserByUsername(jwtService.getLogin(token))
+                if (!jwtService.isTokenValid(token, userDetails)) {
+                    logger.warn("Token is invalid")
+                    return onError(exchange, "Token is invalid")
+                }
+            } catch (_: Exception) {
+                logger.error("Jwt token is invalid or expired!")
+                return onError(exchange, "Jwt token is expired or invalid")
             }
 
-            populateRequestWithHeaders(exchange, token)
+            logger.info("Mutated request with extra headers")
+            val mutatedRequest = populateRequestWithHeaders(exchange, token)
+            sentExchange = sentExchange
+                .mutate()
+                .request(mutatedRequest)
+                .build()
         }
 
-        return chain.filter(exchange)
+        return chain.filter(sentExchange)
     }
 
     private fun onError(exchange: ServerWebExchange, message: String): Mono<Void> {
@@ -77,8 +84,8 @@ class JwtAuthenticationFilter(
         return response.writeWith(Mono.just(buffer))
     }
 
-    private fun populateRequestWithHeaders(exchange: ServerWebExchange, token: String) {
-        exchange.request.mutate()
+    private fun populateRequestWithHeaders(exchange: ServerWebExchange, token: String): ServerHttpRequest {
+        return exchange.request.mutate()
             .header("email", jwtService.getLogin(token))
             .header("id", jwtService.getId(token))
             .build()
