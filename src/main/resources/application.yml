@@ -1,5 +1,7 @@
 logging:
   config: 'classpath:log4j2.yml'
+  level:
+    com.netflix.discovery.shared: error
 
 spring:
   application:
@@ -29,8 +31,8 @@ app:
       is-secure: false                  # У всех сервисов кроме авторизации ставить true
     - id: marketplace-feed-api
       path: /api/feed/**
-      is-secure: true
       uri: lb://marketplace-feed-api
+      is-secure: true
 
 server:
   port: 33306
