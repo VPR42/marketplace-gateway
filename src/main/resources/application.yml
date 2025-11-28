@@ -37,6 +37,10 @@ app:
       path: /api/orders/**
       uri: lb://marketplace-orders-api
       is-secure: true
+    - id: marketplace-profile-api
+      path: /api/profile/**
+      uri: lb://marketplace-profile-api
+      is-secure: true
 
 server:
   port: 33306
