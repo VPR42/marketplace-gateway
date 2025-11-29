@@ -15,6 +15,7 @@ class RouterValidator(
     private val swaggerUrls = listOf(
         "/api/**/docs/**",
         "/api/**/swagger",
+        "/api/**/swagger/**",
         "/api/**/swagger-ui/**",
     )
 
