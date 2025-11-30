@@ -41,6 +41,10 @@ app:
       path: /api/profile/**
       uri: lb://marketplace-profile-api
       is-secure: true
+    - id: marketplace-profile-skills
+      path: /api/skills/**
+      uri: lb://marketplace-profile-api
+      is-secure: true
     - id: marketplace-messanger-api
       path: /api/chat/**
       uri: lb://marketplace-messanger-api
