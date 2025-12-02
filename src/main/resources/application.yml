@@ -33,6 +33,10 @@ app:
       path: /api/feed/**
       uri: lb://marketplace-feed-api
       is-secure: true
+    - id: marketplace-feed-category
+      path: /api/categories/**
+      uri: lb://marketplace-feed-api
+      is-secure: false
     - id: marketplace-orders-api
       path: /api/orders/**
       uri: lb://marketplace-orders-api
@@ -44,7 +48,7 @@ app:
     - id: marketplace-profile-skills
       path: /api/skills/**
       uri: lb://marketplace-profile-api
-      is-secure: true
+      is-secure: false
     - id: marketplace-messanger-api
       path: /api/chat/**
       uri: lb://marketplace-messanger-api
